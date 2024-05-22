@@ -4,22 +4,45 @@ import { Layout, Menu } from "antd";
 
 const { Header, Content, Sider } = Layout;
 
+const headerMenuItems = [
+  {
+    key: "1",
+    label: <Link to="/">主页</Link>,
+  },
+  {
+    key: "2",
+    label: <Link to="/users">用户管理</Link>,
+  },
+  {
+    key: "3",
+    label: <Link to="/roles">角色管理</Link>,
+  },
+];
+
+const siderMenuItems = [
+  {
+    key: "sub1",
+    label: "Navigation One",
+    children: [
+      { key: "1", label: "Option 1" },
+      { key: "2", label: "Option 2" },
+      { key: "3", label: "Option 3" },
+      { key: "4", label: "Option 4" },
+    ],
+  },
+];
+
 const MainLayout = ({ children }) => {
   return (
     <Layout>
       <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" defaultSelectedKeys={["2"]}>
-          <Menu.Item key="1">
-            <Link to="/">主页</Link>
-          </Menu.Item>
-          <Menu.Item key="2">
-            <Link to="/users">用户管理</Link>
-          </Menu.Item>
-          <Menu.Item key="3">
-            <Link to="/roles">角色管理</Link>
-          </Menu.Item>
-        </Menu>
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={["2"]}
+          items={headerMenuItems}
+        />
       </Header>
       <Layout className="site-layout" style={{ marginTop: 64 }}>
         <Sider width={200} className="site-layout-background">
@@ -27,14 +50,9 @@ const MainLayout = ({ children }) => {
             mode="inline"
             defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}>
-            <Menu.SubMenu key="sub1" title="Navigation One">
-              <Menu.Item key="1">Option 1</Menu.Item>
-              <Menu.Item key="2">Option 2</Menu.Item>
-              <Menu.Item key="3">Option 3</Menu.Item>
-              <Menu.Item key="4">Option 4</Menu.Item>
-            </Menu.SubMenu>
-          </Menu>
+            style={{ height: "100%", borderRight: 0 }}
+            items={siderMenuItems}
+          />
         </Sider>
         <Layout style={{ padding: "0 24px 24px" }}>
           <Content
