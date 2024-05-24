@@ -1,6 +1,27 @@
 import React from "react";
 import { Form, Input, Button } from "antd";
 import { loginApi } from "../services/api";
+import styled from "styled-components";
+
+const LoginContainer = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+`;
+
+const StyledForm = styled(Form)`
+  max-width: 400px;
+  width: 100%;
+`;
+
+// 在任何样式化组件中使用主题变量
+const StyledButton = styled.button`
+  background-color: ${(props) => props.theme.colors.primary};
+  color: ${(props) => props.theme.colors.background};
+  font-size: ${(props) => props.theme.fontSizes.medium};
+  /* 其他样式... */
+`;
 
 const LoginPage = () => {
   const onFinish = async (values) => {
@@ -16,15 +37,9 @@ const LoginPage = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-        height: "100vh",
-      }}>
-      <Form
-        name="basic"
+    <LoginContainer>
+      <StyledForm
+        name="login"
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
@@ -46,8 +61,8 @@ const LoginPage = () => {
             Submit
           </Button>
         </Form.Item>
-      </Form>
-    </div>
+      </StyledForm>
+    </LoginContainer>
   );
 };
 
