@@ -37,18 +37,12 @@ const MainLayout = ({ children }) => {
     <Layout>
       <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
         <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["2"]}
-          items={headerMenuItems}
-        />
+        <Menu theme="dark" mode="horizontal" items={headerMenuItems} />
       </Header>
       <Layout className="site-layout" style={{ marginTop: 64 }}>
         <Sider width={200} className="site-layout-background">
           <Menu
             mode="inline"
-            defaultSelectedKeys={["1"]}
             defaultOpenKeys={["sub1"]}
             style={{ height: "100%", borderRight: 0 }}
             items={siderMenuItems}
