@@ -1,23 +1,26 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Layout, Menu } from "antd";
+import { menuItems } from "../utils/menuItems";
+import { hasPermission } from "../utils/authUtils";
+import { useSelector } from "react-redux";
 
 const { Header, Content, Sider } = Layout;
 
-const headerMenuItems = [
-  {
-    key: "1",
-    label: <Link to="/">主页</Link>,
-  },
-  {
-    key: "2",
-    label: <Link to="/users">用户管理</Link>,
-  },
-  {
-    key: "3",
-    label: <Link to="/roles">角色管理</Link>,
-  },
-];
+// const headerMenuItems = [
+//   {
+//     key: "1",
+//     label: <Link to="/">主页</Link>,
+//   },
+//   {
+//     key: "2",
+//     label: <Link to="/users">用户管理</Link>,
+//   },
+//   {
+//     key: "3",
+//     label: <Link to="/roles">角色管理</Link>,
+//   },
+// ];
 
 const siderMenuItems = [
   {
@@ -33,11 +36,33 @@ const siderMenuItems = [
 ];
 
 const MainLayout = ({ children }) => {
+  const location = useLocation();
+  const user = useSelector((state) => state.auth.user);
+
+  const renderMenu = (items) => {
+    return items.map((item) => {
+      if (hasPermission(user, item.permission)) {
+        return (
+          <Menu.Item key={item.key}>
+            <Link to={item.path}>{item.label}</Link>
+          </Menu.Item>
+        );
+      }
+      return null;
+    });
+  };
+
   return (
     <Layout>
       <Header style={{ position: "fixed", zIndex: 1, width: "100%" }}>
         <div className="logo" />
-        <Menu theme="dark" mode="horizontal" items={headerMenuItems} />
+        <Menu
+          theme="dark"
+          mode="horizontal"
+          defaultSelectedKeys={[location.pathname]}
+        >
+          {renderMenu(menuItems)}
+        </Menu>
       </Header>
       <Layout className="site-layout" style={{ marginTop: 64 }}>
         <Sider width={200} className="site-layout-background">
@@ -55,7 +80,8 @@ const MainLayout = ({ children }) => {
               padding: 24,
               margin: 0,
               minHeight: 280,
-            }}>
+            }}
+          >
             {children}
           </Content>
         </Layout>

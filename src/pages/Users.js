@@ -4,6 +4,8 @@ import { fetchUsers } from "../store/userActions";
 import { Table, Button, Modal, Form, Input } from "antd";
 import { createUserApi, updateUserApi, deleteUserApi } from "../services/api";
 import MainLayout from "../layouts/MainLayout";
+import { hasPermission } from "../utils/authUtils";
+import { permissions } from "../utils/permissions";
 
 const UsersPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -13,10 +15,26 @@ const UsersPage = () => {
 
   const dispatch = useDispatch();
   const { users, loading, error } = useSelector((state) => state.user);
+  const user = useSelector((state) => state.auth.user);
 
   useEffect(() => {
-    dispatch(fetchUsers());
-  }, [dispatch]);
+    if (hasPermission(user, permissions.MANAGE_USERS)) {
+      dispatch(fetchUsers());
+    }
+  }, [dispatch, user]);
+
+  const canManageUsers = hasPermission(user, permissions.MANAGE_USERS);
+
+  if (!canManageUsers) {
+    return (
+      <MainLayout>
+        <div>
+          <h1>无权访问</h1>
+          <p>您没有管理用户的权限。</p>
+        </div>
+      </MainLayout>
+    );
+  }
 
   const handleCreateUser = async (values) => {
     try {
@@ -72,13 +90,15 @@ const UsersPage = () => {
               setFormValues(record);
               setModalMode("update");
               setIsModalOpen(true);
-            }}>
+            }}
+          >
             Edit
           </Button>
           <Button
             type="danger"
             onClick={() => handleDeleteUser(record.id)}
-            style={{ marginLeft: "8px" }}>
+            style={{ marginLeft: "8px" }}
+          >
             Delete
           </Button>
         </>
@@ -98,7 +118,8 @@ const UsersPage = () => {
           onClick={() => {
             setModalMode("create");
             setIsModalOpen(true);
-          }}>
+          }}
+        >
           Create User
         </Button>
         <Table dataSource={users} columns={columns} rowKey="id" />
@@ -123,18 +144,21 @@ const UsersPage = () => {
         onCancel={() => {
           setIsModalOpen(false);
           form.resetFields();
-        }}>
+        }}
+      >
         <Form form={form} initialValues={formValues} layout="vertical">
           <Form.Item
             name="name"
             label="Name"
-            rules={[{ required: true, message: "Please input the name!" }]}>
+            rules={[{ required: true, message: "Please input the name!" }]}
+          >
             <Input />
           </Form.Item>
           <Form.Item
             name="email"
             label="Email"
-            rules={[{ required: true, message: "Please input the email!" }]}>
+            rules={[{ required: true, message: "Please input the email!" }]}
+          >
             <Input />
           </Form.Item>
         </Form>

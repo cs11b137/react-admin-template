@@ -16,12 +16,12 @@ const StyledForm = styled(Form)`
 `;
 
 // 在任何样式化组件中使用主题变量
-const StyledButton = styled.button`
-  background-color: ${(props) => props.theme.colors.primary};
-  color: ${(props) => props.theme.colors.background};
-  font-size: ${(props) => props.theme.fontSizes.medium};
-  /* 其他样式... */
-`;
+// const StyledButton = styled.button`
+//   background-color: ${(props) => props.theme.colors.primary};
+//   color: ${(props) => props.theme.colors.background};
+//   font-size: ${(props) => props.theme.fontSizes.medium};
+//   /* 其他样式... */
+// `;
 
 const LoginPage = () => {
   const onFinish = async (values) => {
@@ -43,17 +43,20 @@ const LoginPage = () => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
         initialValues={{ remember: true }}
-        onFinish={onFinish}>
+        onFinish={onFinish}
+      >
         <Form.Item
           label="Username"
           name="username"
-          rules={[{ required: true, message: "Please input your username!" }]}>
+          rules={[{ required: true, message: "Please input your username!" }]}
+        >
           <Input />
         </Form.Item>
         <Form.Item
           label="Password"
           name="password"
-          rules={[{ required: true, message: "Please input your password!" }]}>
+          rules={[{ required: true, message: "Please input your password!" }]}
+        >
           <Input.Password />
         </Form.Item>
         <Form.Item wrapperCol={{ offset: 8, span: 16 }}>

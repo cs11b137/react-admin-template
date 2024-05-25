@@ -6,7 +6,8 @@ const RouteGuard = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
+    // const user = JSON.parse(localStorage.getItem("user"));
+    const user = true;
 
     if (!user) {
       // 如果未登录并且当前路由不是登录页面,则重定向到登录页面
